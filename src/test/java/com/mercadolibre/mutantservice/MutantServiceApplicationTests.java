@@ -63,7 +63,9 @@ class MutantServiceApplicationTests {
 	@Test
 	public void getStats() {
 		ResponseEntity<StatsModel> response = controller.stats();
-		StatsModel statsExpected = new StatsModel(1, 1);
+		int humanCount = 1;
+		int mutantCount = 1;
+		StatsModel statsExpected = new StatsModel(mutantCount, humanCount);
 		ResponseEntity<StatsModel> responseExpected = new ResponseEntity<StatsModel>(statsExpected,HttpStatus.OK);
 		Assert.assertEquals(responseExpected, response);
 		
