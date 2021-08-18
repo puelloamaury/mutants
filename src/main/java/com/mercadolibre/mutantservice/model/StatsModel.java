@@ -7,15 +7,13 @@ public class StatsModel {
 	public StatsModel(long mutantCount, long humanCount) {
 		this.mutantCount = mutantCount;
 		this.humanCount = humanCount;
-		if(humanCount>0) {
-			this.ratio = mutantCount/humanCount;
-		} else {
-			if(mutantCount == 0) {
-				this.ratio = 0;
-			} else {
-				this.ratio = 1;
-			}
-		}
+		calculateRatio(mutantCount, humanCount);
+
+	}
+	private void calculateRatio(long mutantCount, long humanCount) {
+		double totalCount = humanCount+mutantCount;
+		totalCount = totalCount == 0 ? 1 : totalCount;
+		this.ratio = mutantCount/totalCount;
 	}
 	private long mutantCount;
 	private long humanCount;

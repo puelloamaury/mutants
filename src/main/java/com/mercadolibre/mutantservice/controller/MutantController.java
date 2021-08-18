@@ -1,5 +1,6 @@
 package com.mercadolibre.mutantservice.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -32,24 +33,21 @@ public class MutantController {
 	@PostMapping("/mutant")
 	public ResponseEntity<HttpStatus> save(@RequestBody DNASequence dnasequence) throws BasesNitrogenadasException {
 		
-		List<String> dnaList = dnasequence.getDna();
+		List<String> dnaList = new ArrayList<String>();
+		dnaList.addAll(dnasequence.getDna());
 		
 		MutantUtil.validarBasesNitrogenadas(dnaList);
 		
-		boolean isMutant = MutantUtil.isMutant(dnaList);
+		HttpStatus status;
+		status = MutantUtil.isMutant(dnaList);
 		
 		DNAModel dnaModel = new DNAModel();
-		dnaModel.setDna("");
+		dnaModel.setDna(dnasequence.getDna().toString());
+		boolean isMutant = status.equals(HttpStatus.OK);
 		dnaModel.setMutant(isMutant);
 		
 		service.save(dnaModel);
 		
-		HttpStatus status;
-		if(isMutant) {
-			status =HttpStatus.OK;
-		} else {
-			status =HttpStatus.FORBIDDEN;
-		}
 		ResponseEntity<HttpStatus> response = ResponseEntity.status(status).build();
 		return response;
 //		return new Greeting(counter.incrementAndGet(), String.format(template, name));
